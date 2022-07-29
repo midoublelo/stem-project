@@ -6,16 +6,16 @@ def generateGraph(dataset: str, mode: str):
     Generates a graph for given dataset
     '''
     if dataset == "londonCases":
-        df = pd.read_csv(r"C:\Users\Millo\Desktop\Spirefall\Projects\stem-project\londonCases.csv") # Loads data from csv and makes a dataframe in pandas
+        df = pd.read_csv(r".\csv\londonCases.csv") # Loads data from csv and makes a dataframe in pandas
         fig = px.line(df, x = 'date', y = 'cumCasesBySpecimenDate', title='Daily New Cases in London') # Creates a line graph using the 'date' and 'cumCasesBySpecimenDate' columns from the csv
     elif dataset == "usaCases":
-        df = pd.read_csv(r"C:\Users\Millo\Desktop\Spirefall\Projects\stem-project\usaCases.csv")
+        df = pd.read_csv(r".\csv\usaCases.csv")
         fig = px.line(df, x = 'date', y = 'total_cases', title='Daily New Cases in USA')
     elif dataset == "englandDeaths":
-        df = pd.read_csv(r"C:\Users\Millo\Desktop\Spirefall\Projects\stem-project\englandDeaths.csv")
+        df = pd.read_csv(r".\csv\englandDeaths.csv")
         fig = px.line(df, x = 'week', y = 'deaths', title='Weekly Covid Deaths in England')
     elif dataset == "globalVaccines":
-        df = pd.read_csv(r"C:\Users\Millo\Desktop\Spirefall\Projects\stem-project\globalVaccines.csv")
+        df = pd.read_csv(r".\csv\globalVaccines.csv")
         fig = px.choropleth(df, locations="ISO3",
                             color="PERSONS_FULLY_VACCINATED_PER100",
                             hover_name="COUNTRY",
@@ -32,4 +32,4 @@ def generateGraph(dataset: str, mode: str):
     elif mode == "png":
         fig.show(renderer="png") # Creates png image
 
-generateGraph("globalVaccines", "html-connected")
+generateGraph("londonCases", "html-connected")
