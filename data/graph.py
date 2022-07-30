@@ -1,21 +1,34 @@
 import pandas as pd
 import plotly.express as px
 
-COLOURSCHEME = px.colors.sequential.algae
+COLOURSCHEME = px.colors.sequential.Blues
 
 def generateGraph(dataset: str, mode: str="html"):
     '''
     Generates a graph for given dataset
     '''
+    print(f"Generating graph for '{dataset}' in mode '{mode}'")
     if dataset == "londonCases":
         df = pd.read_csv(r".\csv\londonCases.csv") # Loads data from csv and makes a dataframe in pandas
-        fig = px.line(df, x = 'date', y = 'cumCasesBySpecimenDate', title='Daily New Cases in London') # Creates a line graph using the 'date' and 'cumCasesBySpecimenDate' columns from the csv
+        fig = px.line(df, x = 'date', y = 'cumCasesBySpecimenDate', title='Daily New Cases in London', labels={
+                "date": "Date",
+                "cumCasesBySpecimenDate": "Total Cases"
+            }
+        ) # Creates a line graph using the 'date' and 'cumCasesBySpecimenDate' columns from the csv
     elif dataset == "usaCases":
         df = pd.read_csv(r".\csv\usaCases.csv")
-        fig = px.line(df, x = 'date', y = 'total_cases', title='Daily New Cases in USA')
+        fig = px.line(df, x = 'date', y = 'total_cases', title='Daily New Cases in USA', labels={
+                "date": "Date",
+                "total_cases": "Total Cases"
+            }
+        )
     elif dataset == "englandDeaths":
         df = pd.read_csv(r".\csv\englandDeaths.csv")
-        fig = px.line(df, x = 'week', y = 'deaths', title='Weekly Covid Deaths in England')
+        fig = px.line(df, x = 'week', y = 'deaths', title='Weekly Covid Deaths in England', labels={
+                "week": "Week Ending",
+                "deaths": "Weekly Deaths"
+            }
+        )
     elif dataset == "globalVaccines":
         df = pd.read_csv(r".\csv\globalVaccines.csv")
         fig = px.choropleth(df, locations="ISO3",
@@ -25,10 +38,10 @@ def generateGraph(dataset: str, mode: str="html"):
                             title = "Global Vaccinations",
                             color_continuous_scale=COLOURSCHEME,
                             labels={
-                                "PERSONS_FULLY_VACCINATED_PER100": "% of population vaccinated",
-                                "ISO3": "Country code",
-                                "FIRST_VACCINE_DATE": "Date of first vaccination",
-                                "VACCINES_USED": "List of vaccine types used",
+                                "PERSONS_FULLY_VACCINATED_PER100": "% of Population Vaccinated",
+                                "ISO3": "Country Code",
+                                "FIRST_VACCINE_DATE": "Date of First Vaccination",
+                                "VACCINES_USED": "List of Vaccine Types used",
                             }
         ) # Creates a choropleth map of the vaccination data across the world based on the percentage of people fully vaccinated. Also shows date of first vaccination and list of vaccine types used
         fig["layout"].pop("updatemenus")
@@ -40,6 +53,5 @@ def generateGraph(dataset: str, mode: str="html"):
         fig.write_html('graph.html', include_plotlyjs="cdn", auto_open=True) # Writes to html file with a much smaller file size, requires internet connection
     elif mode == "png":
         fig.show(renderer="png") # Creates png image
-    print(f"Generating graph for '{dataset}' in mode '{mode}'")
-
+    
 generateGraph("globalVaccines")
