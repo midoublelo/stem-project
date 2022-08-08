@@ -31,28 +31,32 @@ def generateGraph(dataset: str, mode: str="html"):
         )
     elif dataset == "globalVaccines":
         df = pd.read_csv(r".\csv\globalVaccines.csv")
-        fig = px.choropleth(df, locations="ISO3",
-                            color="PERSONS_FULLY_VACCINATED_PER100",
-                            hover_name="COUNTRY",
-                            hover_data={'VACCINES_USED', 'FIRST_VACCINE_DATE'},
-                            title = "Global Vaccinations",
-                            color_continuous_scale=COLOURSCHEME,
-                            labels={
-                                "PERSONS_FULLY_VACCINATED_PER100": "% of Population Vaccinated",
-                                "ISO3": "Country Code",
-                                "FIRST_VACCINE_DATE": "Date of First Vaccination",
-                                "VACCINES_USED": "List of Vaccine Types used",
-                            }
-        ) 
+        fig = px.choropleth(
+            df,
+            locations="ISO3",
+            color="PERSONS_FULLY_VACCINATED_PER100",
+            hover_name="COUNTRY",
+            # hover_data={'VACCINES_USED', 'FIRST_VACCINE_DATE'},
+			hover_data={'FIRST_VACCINE_DATE'},
+            title="Global Vaccinations",
+            color_continuous_scale=COLOURSCHEME,
+            labels={
+                "PERSONS_FULLY_VACCINATED_PER100":
+                "% of Population Vaccinated",
+                "ISO3": "Country Code",
+                "FIRST_VACCINE_DATE": "Date of First Vaccination",
+                #"VACCINES_USED": "List of Vaccine Types used",
+            })
         # Creates a choropleth map of the vaccination data across the world based on the percentage of people fully vaccinated. 
         # Also shows date of first vaccination and list of vaccine types used
         fig["layout"].pop("updatemenus")
     if mode == "web":
         fig.show(renderer="browser") # Opens in the browser
     elif mode == "html":
-        fig.write_html('graph.html', auto_open=True) # Writes to static html file - Default
+        fig.write_html(f"{dataset}.html", auto_open=True)  # Writes to static html file - Default
     elif mode == "html-connected":
-        fig.write_html('graph.html', include_plotlyjs="cdn", auto_open=True) # Writes to html file with a much smaller file size, requires internet connection
+        fig.write_html(
+            f"{dataset}.html", include_plotlyjs="cdn", auto_open=True)  # Writes to html file with a much smaller file size, requires internet connection
     elif mode == "png":
         fig.show(renderer="png") # Creates png image - Requires kaleido library and ipython
     elif mode == "auto":
