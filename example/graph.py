@@ -6,7 +6,7 @@ from sys import platform
 
 def loadCSV(dataset: str):
 	if platform == "linux" or platform == "linux2":
-		strFormat = rf"./data/csv/{dataset}.csv"
+		strFormat = rf"./example/csv/{dataset}.csv"
 	elif platform == "win32":
 		strFormat = rf".\csv\{dataset}.csv"
 	csvLoaded = pd.read_csv(strFormat)
