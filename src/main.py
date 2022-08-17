@@ -1,6 +1,4 @@
 import pipeline
-# import graph
-import pandas
 
 '''
 1. Take data from csv
@@ -32,7 +30,7 @@ def main():
             print("Error: That is not an available timescale.")
             main()
         else:
-            print(f"Pipeline: Preparing {selTime.lower()} data for region {selRegion}")
+            print(f"Pipeline: Preparing {selTime.lower()} data for region '{selRegion}'")
             pipeline.prepare(selRegion, selTime)
-            #graph.generateGraph()
+
 main()
