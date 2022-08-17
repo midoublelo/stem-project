@@ -28,10 +28,10 @@ def prepare(region, timescale):
 			nitroDioxideWeekly['Date'] = nitroDioxideWeekly['Date'].dt.to_period("W-WED").dt.end_time.dt.strftime("%Y-%m-%d")
 			nitroDioxideWeekly.rename(columns={'Date': 'Week', 'Volume (V µg/m3)': 'Nitrogen Dioxide Volume'}, inplace=True)
 
-			LWMMonthly = pd.merge(pm25Weekly, nitroDioxideWeekly)
+			LWMWeekly = pd.merge(pm25Weekly, nitroDioxideWeekly)
 			#print(LWMWeekly)
 
-			graph.generateGraph("LWM", LWMMonthly, timescale)
+			graph.generateGraph("LWM", LWMWeekly, timescale)
 		if timescale == "MONTHLY":
 			pm25Monthly = pm25Daily
 			pm25Monthly['Date'] = pd.to_datetime(pm25Monthly['Date'], infer_datetime_format=True)

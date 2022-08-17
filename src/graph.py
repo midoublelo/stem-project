@@ -2,7 +2,7 @@ import plotly.express as px
 
 def generateGraph(region, dataset, time):
     '''
-    Generates a graph for regional data
+    Generates a graph for regional data and writes to an HTML file
 
  	Parameters:
  		region: Choose the region to be plotted

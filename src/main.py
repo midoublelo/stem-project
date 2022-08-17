@@ -8,7 +8,7 @@ import pipeline
 
 def main():
     print("""
-    Welcome
+    Region Selection
 
     Regions:
     - LWM: London Westminster (PM2.5, Nitrogen Dioxide)
