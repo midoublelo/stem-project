@@ -12,9 +12,10 @@ def main():
 
     Regions:
     - LWM: London Westminster (PM2.5, Nitrogen Dioxide)
+    - NCC: Newcastle Centre(Ozone, PM10, PM2.5, Nitrogen Dioxide)
     """)
     selRegion = input("Select a region: ").upper()
-    if selRegion not in ('LWM'):
+    if selRegion not in ('LWM', 'NCC'):
         print("Error: That is not an available region.")
         main()
     else:
