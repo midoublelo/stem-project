@@ -14,7 +14,7 @@ def loadCSV(dataset: str, region: str):
 	csvLoaded = pd.read_csv(strFormat)
 	return csvLoaded
 
-def prepare(region, timescale):
+def prepare(region, timescale, mode):
 	if region == "LWM":
 		pm25Daily = loadCSV("pm25", region)
 		nitroDioxideDaily = loadCSV("nitrogenDioxide", region)
@@ -32,7 +32,7 @@ def prepare(region, timescale):
 			LWMWeekly = pd.merge(pm25Weekly, nitroDioxideWeekly)
 			#print(LWMWeekly)
 
-			graph.generateGraph("LWM", LWMWeekly, timescale)
+			graph.generateGraph("LWM", LWMWeekly, timescale, mode)
 		if timescale == "MONTHLY":
 			pm25Monthly = pm25Daily
 			pm25Monthly['Date'] = pd.to_datetime(pm25Monthly['Date'], infer_datetime_format=True)
@@ -49,7 +49,7 @@ def prepare(region, timescale):
 			LWMMonthly = pd.merge(pm25Monthly, nitroDioxideMonthly)
 			#print(LWMMonthly)
 			
-			graph.generateGraph("LWM", LWMMonthly, timescale)
+			graph.generateGraph("LWM", LWMMonthly, timescale, mode)
 	if region == "NCC":
 		ozoneDaily = loadCSV("ozone", region)
 		# pm10Daily = loadCSV("pm10", region)
@@ -81,7 +81,7 @@ def prepare(region, timescale):
 			LCCWeekly = reduce(lambda left, right: pd.merge(left, right, on='Week'), multiData)
 			print(LCCWeekly)
 
-			graph.generateGraph("LCC", LCCWeekly, timescale)
+			graph.generateGraph("LCC", LCCWeekly, timescale, mode)
 		if timescale == "MONTHLY":
 			ozoneMonthly = ozoneDaily
 			ozoneMonthly['Date'] = pd.to_datetime(ozoneMonthly['Date'], infer_datetime_format=True)
@@ -111,4 +111,4 @@ def prepare(region, timescale):
 			LCCMonthly = reduce(lambda left, right: pd.merge(left, right, on='Month', how='left'), multiData)
 			print(LCCMonthly)
 			
-			graph.generateGraph("LCC", LCCMonthly, timescale)
+			graph.generateGraph("LCC", LCCMonthly, timescale, mode)

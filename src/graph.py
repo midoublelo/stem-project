@@ -68,9 +68,12 @@ def generateGraph(region, dataset, time, mode=None):
     fig["layout"].pop("updatemenus")
     #print(fig)
     #fig.write_image(f"{region}-{time}.jpeg")
-    if mode == "png":
+    if mode == "PNG":
         fig.write_image(f"{region}-{time}.png")
         print(f"Graph: Graph generated in '{region}-{time}.png'")
-    elif mode == "html" or None:
+    elif mode == "HTML-OFFLINE":
+        fig.write_html(f"{region}-{time}.html", auto_open=False)
+        print(f"Graph: Graph generated in '{region}-{time}.html'")
+    elif mode == "HTML" or None:
         fig.write_html(f"{region}-{time}.html", auto_open=False, include_plotlyjs="cdn")
         print(f"Graph: Graph generated in '{region}-{time}.html'")
