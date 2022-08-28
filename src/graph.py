@@ -1,4 +1,11 @@
 import plotly.express as px
+import pprint
+
+regionNames = {
+        "LWM": "London Westminster",
+        "NCC": "Newcastle Centre",
+        "LEC": "Leeds Centre"
+    }
 
 def generateGraph(region, dataset, time, mode=None):
     '''
@@ -12,13 +19,13 @@ def generateGraph(region, dataset, time, mode=None):
     print(f"Graph: Generating graph for '{region}'")
     if region == "LWM":
         if time == "WEEKLY":
-            df = dataset
-            fig = px.scatter(df,
-                x='Week',
-                y=['PM2.5 Volume', 'Volume(V µg/m3)'],
-                title='Weekly Air Pollution',
-                category_orders={"variable": ["PM2.5", "Nitrogen Dioxide"]},
-                labels={
+            df = dataset # Loads dataset that has gone through pipeline.py
+            fig = px.scatter(df, # Creates a scatter plot in Plotly using the data from the pipeline
+                x='Week', # Using the column name that has been given by the pipeline
+                y=['PM2.5 Volume', 'Volume(V µg/m3)'], # Using the column names from the CSV files
+                title='Weekly Air Pollution', # Initial graph title, region name to be added after
+                category_orders={"variable": ["PM2.5", "Nitrogen Dioxide"]}, # Correctly order the pollutants
+                labels={ # Update labels on graph for user readability
                     "variable": "Pollutant",
                     "value": "Volume (V µg/m3)",
                 }
@@ -41,7 +48,7 @@ def generateGraph(region, dataset, time, mode=None):
                                       hovertemplate = t.hovertemplate.replace(t.name, newLabels[t.name])
                                      )
                   )
-    if region == "LCC":
+    if region == "NCC":
         if time == "WEEKLY":
             df = dataset
             fig = px.scatter(df,
@@ -64,7 +71,42 @@ def generateGraph(region, dataset, time, mode=None):
                     "value": "Volume (V µg/m3)",
                 }
             )
-    fig.update_layout(legend_title_text='Pollutant')
+        newLabels = {'Ozone Volume':'Ozone', 'PM2.5 Volume': 'PM2.5', 'Nitrogen Dioxide Volume': 'Nitrogen Dioxide'}
+        fig.for_each_trace(lambda t: t.update(name = newLabels[t.name],
+                                      legendgroup = newLabels[t.name],
+                                      hovertemplate = t.hovertemplate.replace(t.name, newLabels[t.name])
+                                     )
+                  )
+    if region == "LEC":
+        if time == "WEEKLY":
+            df = dataset
+            fig = px.scatter(df,
+                x='Week',
+                y=['Ozone Volume', 'PM2.5 Volume', 'Nitrogen Dioxide Volume'], # ['Ozone Volume', 'PM10 Volume', 'PM2.5 Volume', 'Nitrogen Dioxide Volume'],
+                title='Weekly Air Pollution',
+                labels={
+                    "variable": "Pollutant",
+                    "value": "Volume (V µg/m3)",
+                }
+            )
+        if time == "MONTHLY":
+            df = dataset
+            fig = px.scatter(df,
+                x='Month',
+                y=['Ozone Volume', 'PM2.5 Volume', 'Nitrogen Dioxide Volume'], # ['Ozone Volume', 'PM10 Volume', 'PM2.5 Volume', 'Nitrogen Dioxide Volume'],
+                title='Monthly Air Pollution',
+                labels={
+                    "variable": "Pollutant",
+                    "value": "Volume (V µg/m3)",
+                }
+            )
+        newLabels = {'Ozone Volume':'Ozone', 'PM2.5 Volume': 'PM2.5', 'Nitrogen Dioxide Volume': 'Nitrogen Dioxide'}
+        fig.for_each_trace(lambda t: t.update(name = newLabels[t.name],
+                                      legendgroup = newLabels[t.name],
+                                      hovertemplate = t.hovertemplate.replace(t.name, newLabels[t.name])
+                                     )
+                  )
+    fig.update_layout(legend_title_text='Pollutant', title=f"{fig.layout.title.text} - {regionNames[region]}")
     fig["layout"].pop("updatemenus")
     #print(fig)
     #fig.write_image(f"{region}-{time}.jpeg")
